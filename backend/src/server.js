@@ -74,6 +74,14 @@ app.get(
   })
 );
 
+app.get("/", (req, res) => {
+  res.json({ ok: true, service: "carparts-api" });
+});
+
+app.get("/health", (req, res) => {
+  res.json({ ok: true });
+});
+
 // -------------------- PUBLIC: ORDER TRACKING --------------------
 // GET /api/orders/:id?phone=599123123
 app.get(
