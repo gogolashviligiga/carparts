@@ -1,0 +1,23 @@
+# Node
+node_modules
+npm-debug.log
+
+# Angular
+dist
+.angular
+.cache
+
+# Environment files
+.env
+backend/.env
+admin-panel/.env
+
+# Logs
+logs
+*.log
+
+# OS
+.DS_Store
+
+# IDE
+.vscode
