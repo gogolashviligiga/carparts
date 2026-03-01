@@ -1,0 +1,30 @@
+/* App shell only */
+
+.site {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* LOGOUT BUTTON */
+
+.btn-logout {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: none;
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.btn-logout.danger {
+  background: #e53935;
+  color: #fff;
+}
+
+.btn-logout.danger:hover {
+  background: #c62828;
+  transform: translateY(-1px);
+}
+
+

@@ -1,0 +1,128 @@
+<!-- ADMIN HEADER -->
+<section class="card admin-hero">
+  <div class="content-header admin-hero-header">
+    <div>
+      <h1 class="page-title" style="margin:0;">Admin</h1>
+      <div class="muted">Manage products here. Orders are in the Orders page.</div>
+    </div>
+
+    <div class="actions admin-hero-actions">
+      <a class="btn" routerLink="/admin/orders">Orders</a>
+      <button class="btn ghost" type="button" (click)="load()">Reload</button>
+      <button class="btn primary" type="button" (click)="openCreate()">New Product</button>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<section class="card admin-search">
+  <h2 class="card-title" style="margin:0 0 10px 0;">Search</h2>
+
+  <div class="admin-search-row">
+    <input
+      class="admin-search-input"
+      name="searchText"
+      [(ngModel)]="searchText"
+      placeholder="Search by SKU or title..."
+      (keydown.enter)="doSearch()"
+    />
+
+    <button class="btn primary" type="button" (click)="doSearch()">Search</button>
+    <button class="btn ghost" type="button" (click)="clear()">Clear</button>
+  </div>
+</section>
+
+<!-- CREATE / EDIT FORM -->
+<section class="card" style="margin-bottom: 12px;" *ngIf="showForm">
+  <h2 class="card-title" style="margin:0;">{{ editingId === null ? 'New product' : 'Edit product' }}</h2>
+  <div class="muted" style="margin:6px 0 12px 0;">This will save to the database.</div>
+
+  <form (ngSubmit)="saveProduct()">
+    <div class="products">
+      <div class="product">
+        <div class="muted">Brand</div>
+        <select name="brand_id" [(ngModel)]="selectedBrandId" (ngModelChange)="onBrandChange()">
+          <option [ngValue]="null">Select brand…</option>
+          <option *ngFor="let b of brands" [ngValue]="b.id">{{ b.name }}</option>
+        </select>
+      </div>
+
+      <div class="product">
+        <div class="muted">Model</div>
+        <select
+          name="model_id"
+          [(ngModel)]="form.model_id"
+          [disabled]="!selectedBrandId || models.length === 0"
+          required
+        >
+          <option [ngValue]="null">Select model…</option>
+          <option *ngFor="let m of models" [ngValue]="m.id">{{ m.name }}</option>
+        </select>
+      </div>
+
+      <div class="product">
+        <div class="muted">SKU</div>
+        <input name="sku" [(ngModel)]="form.sku" required />
+      </div>
+
+      <div class="product">
+        <div class="muted">Title (KA)</div>
+        <input name="title_ka" [(ngModel)]="form.title_ka" required />
+      </div>
+
+      <div class="product">
+        <div class="muted">Image URL</div>
+        <input
+          name="image_url"
+          [(ngModel)]="form.image_url"
+          placeholder="https://example.com/image.jpg"
+        />
+      </div>
+
+      <div class="product">
+        <div class="muted">Price (GEL)</div>
+        <input name="price_gel" type="number" [(ngModel)]="form.price_gel" min="0" />
+      </div>
+
+      <div class="product">
+        <div class="muted">Stock qty</div>
+        <input name="stock_qty" type="number" [(ngModel)]="form.stock_qty" min="0" />
+      </div>
+    </div>
+
+    <div class="actions" style="margin-top: 12px;">
+      <button class="btn ghost" type="button" (click)="closeForm()">Cancel</button>
+      <button class="btn" type="button" (click)="resetForm()">Clear</button>
+      <button class="btn primary" type="submit">Save</button>
+    </div>
+  </form>
+</section>
+
+<!-- PRODUCTS LIST -->
+<section class="card">
+  <div class="content-header" style="margin-bottom: 10px;">
+    <h2 class="card-title" style="margin:0;">Products</h2>
+    <div class="muted">{{ products.length }} items</div>
+  </div>
+
+  <div class="products" *ngIf="products.length > 0; else empty">
+    <div class="product" *ngFor="let p of products">
+      <div class="row">
+        <div class="sku">{{ p.sku }}</div>
+        <div class="price">{{ p.price_gel | number:'1.2-2' }} GEL</div>
+      </div>
+
+      <div class="title">{{ p.title_ka }}</div>
+      <div class="muted">Stock: {{ p.stock_qty }}</div>
+
+      <div class="actions admin-item-actions" style="margin-top: 10px;">
+        <button class="btn warning" type="button" (click)="openEdit(p)">Edit</button>
+        <button class="btn danger" type="button" (click)="deleteProduct(p)">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #empty>
+    <div class="muted">No products yet.</div>
+  </ng-template>
+</section>

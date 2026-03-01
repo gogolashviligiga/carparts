@@ -1,0 +1,114 @@
+<section class="card product-details-card">
+  <!-- HEADER -->
+  <div class="content-header" style="margin-bottom: 10px;">
+    <div>
+      <h2 class="card-title" style="margin:0;">Product Details</h2>
+      <div class="muted">View item and add to cart</div>
+    </div>
+
+    <div class="actions">
+      <a routerLink="/products" class="btn">Back</a>
+      <a routerLink="/cart" class="btn">Cart</a>
+    </div>
+  </div>
+
+  <!-- STATES -->
+  <p *ngIf="loading" class="muted">Loading…</p>
+
+  <p *ngIf="!loading && error" class="error">
+    {{ error }}
+  </p>
+
+  <!-- CONTENT -->
+  <ng-container *ngIf="!loading && !error && product">
+    <div class="pd-grid">
+
+      <!-- LEFT: IMAGE VIEWER -->
+      <div class="pd-left">
+        <div class="viewer">
+          <div
+            class="viewer-viewport"
+            (wheel)="onWheel($event)"
+            (mousedown)="onDragStart($event)"
+            (mousemove)="onDragMove($event)"
+            (mouseup)="onDragEnd()"
+            (mouseleave)="onDragEnd()"
+            (touchstart)="onTouchStart($event)"
+            (touchmove)="onTouchMove($event)"
+            (touchend)="onDragEnd()"
+          >
+            <img
+              *ngIf="product.image_url; else noImg"
+              class="viewer-img"
+              [src]="product.image_url"
+              [alt]="product.title_ka || product.sku"
+              [style.transform]="imgTransform"
+              [style.cursor]="zoom > 1 ? (dragging ? 'grabbing' : 'grab') : 'default'"
+              draggable="false"
+              (dragstart)="$event.preventDefault()"
+            />
+
+            <ng-template #noImg>
+              <div class="noimg">No image</div>
+            </ng-template>
+          </div>
+
+          <div class="viewer-controls" *ngIf="product.image_url">
+            <button class="btn" type="button" (click)="zoomOut()" [disabled]="zoom <= 1">-</button>
+            <div class="muted">{{ (zoom * 100) | number:'1.0-0' }}%</div>
+            <button class="btn" type="button" (click)="zoomIn()">+</button>
+            <button
+              class="btn"
+              type="button"
+              (click)="resetZoom()"
+              [disabled]="zoom === 1 && panX === 0 && panY === 0"
+            >
+              Reset
+            </button>
+          </div>
+
+          <div class="muted tips" *ngIf="product.image_url">
+            Tip: scroll to zoom. When zoomed, drag to move.
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: INFO -->
+      <div class="pd-right">
+        <div class="pd-top">
+          <div>
+            <div class="muted">SKU</div>
+            <div class="pd-sku mono"><b>{{ product.sku }}</b></div>
+          </div>
+
+          <div style="text-align:right;">
+            <div class="muted">Price</div>
+            <div class="pd-price"><b>{{ product.price_gel | number:'1.2-2' }} GEL</b></div>
+          </div>
+        </div>
+
+        <div class="pd-title">
+          <h3 style="margin: 0;">{{ product.title_ka }}</h3>
+          <div class="muted" style="margin-top:6px;">Stock: {{ product.stock_qty }}</div>
+        </div>
+
+        <div class="pd-actions">
+          <button
+            class="btn primary"
+            type="button"
+            (click)="addToCart()"
+            [disabled]="product.stock_qty <= 0"
+          >
+            {{ product.stock_qty > 0 ? 'Add to cart' : 'Out of stock' }}
+          </button>
+        </div>
+
+        <div class="pd-extra muted" *ngIf="product.description_ka">
+          <div style="font-weight:600; margin-bottom:6px; color:#111;">Description</div>
+          <div style="white-space:pre-line;">{{ product.description_ka }}</div>
+        </div>
+      </div>
+
+    </div>
+  </ng-container>
+</section>

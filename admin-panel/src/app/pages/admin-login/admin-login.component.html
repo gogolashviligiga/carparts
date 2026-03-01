@@ -1,0 +1,39 @@
+<section class="login-wrap">
+  <div class="login-card">
+    <h1>Admin Login</h1>
+    <p class="muted">Enter your admin credentials to manage products and orders.</p>
+
+    <form (ngSubmit)="login()" #f="ngForm">
+      <label class="label">Email</label>
+      <input
+        name="email"
+        [(ngModel)]="email"
+        type="email"
+        autocomplete="username"
+        placeholder="admin@test.com"
+        required
+      />
+
+      <label class="label" style="margin-top:12px;">Password</label>
+      <input
+        name="password"
+        [(ngModel)]="password"
+        type="password"
+        autocomplete="current-password"
+        placeholder="••••••••"
+        required
+      />
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+
+      <button class="btn primary" type="submit" [disabled]="loading || !f.valid">
+        {{ loading ? 'Logging in...' : 'Login' }}
+      </button>
+
+      <div class="links">
+        <a routerLink="/">Back to Home</a>
+        <a routerLink="/products">Shop</a>
+      </div>
+    </form>
+  </div>
+</section>

@@ -1,0 +1,40 @@
+<div class="site">
+  <header class="navbar">
+    <div class="navbar-inner">
+      <a class="logo" routerLink="/">CarParts</a>
+
+      <nav class="navlinks">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        <a routerLink="/products" routerLinkActive="active">Shop</a>
+        <a routerLink="/about" routerLinkActive="active">About</a>
+        <a routerLink="/contact" routerLinkActive="active">Contact</a>
+
+        <!-- ✅ Orders only when admin -->
+        <a *ngIf="(isAdmin$ | async)" routerLink="/admin/orders" routerLinkActive="active">Orders</a>
+      </nav>
+
+      <div class="actions">
+        <a *ngIf="!(isAdmin$ | async)" class="btn-link" routerLink="/admin-login">Login</a>
+
+        <a *ngIf="(isAdmin$ | async)" class="btn-link" routerLink="/admin">Admin</a>
+        <button *ngIf="(isAdmin$ | async)" class="btn-logout danger" (click)="logout()">
+  Logout
+</button>
+
+        <a class="cart-link" routerLink="/cart" routerLinkActive="active">
+          Cart <span class="badge">{{ cart.count() }}</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="muted">© {{ year }} CarParts. All rights reserved.</div>
+    </div>
+  </footer>
+</div>

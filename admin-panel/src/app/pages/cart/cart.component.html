@@ -1,0 +1,76 @@
+<!-- HEADER -->
+<div class="content-header">
+  <div>
+    <h1 class="page-title" style="margin:0;">Cart</h1>
+    <div class="muted">Review items before checkout</div>
+  </div>
+
+  <div class="actions">
+    <a class="btn ghost" routerLink="/products">Continue shopping</a>
+  </div>
+</div>
+
+<section class="card">
+  <p *ngIf="cart.items.length === 0" class="muted" style="margin:0;">
+    Your cart is empty.
+  </p>
+
+  <div *ngIf="cart.items.length > 0">
+    <div class="table-wrap">
+      <table class="table cart-table">
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Title</th>
+            <th class="num">Price</th>
+            <th class="num">Qty</th>
+            <th class="num">Sum</th>
+            <th class="actions-col"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let i of cart.items">
+            <td class="mono">{{ i.sku }}</td>
+            <td>{{ i.title_ka }}</td>
+            <td class="num">{{ i.price_gel | number:'1.2-2' }} ₾</td>
+
+            <td class="num">
+              <div class="qty-box">
+  <button type="button" (click)="dec(i)">−</button>
+
+  <input
+    type="number"
+    [ngModel]="i.qty"
+    (ngModelChange)="onQtyChange(i.id, $event)"
+    min="1"
+  />
+
+  <button type="button" (click)="inc(i)">+</button>
+</div> 
+            </td>
+
+            <td class="num strong">{{ (i.price_gel * i.qty) | number:'1.2-2' }} ₾</td>
+
+            <td class="actions-col">
+              <button class="btn danger" type="button" (click)="cart.remove(i.id)">
+                Remove
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="cart-summary">
+      <div class="cart-total">
+        <div class="muted">Total</div>
+        <div class="total-amount">{{ cart.total() | number:'1.2-2' }} ₾</div>
+      </div>
+
+      <div class="cart-cta">
+        <a class="btn primary" routerLink="/checkout">Go to Checkout</a>
+      </div>
+    </div>
+  </div>
+</section>

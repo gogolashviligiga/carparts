@@ -1,0 +1,228 @@
+<!-- HEADER -->
+<div class="content-header">
+  <div>
+    <h1 class="page-title" style="margin:0;">Products</h1>
+    <div class="muted">Public catalog (customers see this)</div>
+  </div>
+
+  <div class="actions">
+    <button class="btn ghost" type="button" (click)="reload()" [disabled]="loading">
+      Reload
+    </button>
+    <button class="btn" type="button" (click)="clear()" [disabled]="loading">
+      Reset
+    </button>
+  </div>
+</div>
+
+<!-- BROWSE / FILTER + SEARCH -->
+<section class="card" style="margin-bottom: 12px;">
+  <div class="toolbar-top">
+    <div>
+      <h2 class="card-title" style="margin:0;">Browse parts</h2>
+      <div class="muted">Filter by brand/model or search by SKU/title</div>
+    </div>
+  </div>
+
+  <div class="toolbar-grid">
+    <!-- BRAND (custom dropdown with logo) -->
+    <div class="field">
+      <div class="field-label">Brand</div>
+
+      <div class="brand-dd">
+        <button
+          type="button"
+          class="brand-dd-btn"
+          (click)="toggleBrandDropdown()"
+          [disabled]="loading"
+        >
+          <span class="brand-dd-left">
+            <!-- show icon ONLY when a real brand is selected -->
+            <span class="brand-dd-icon" *ngIf="selectedBrandLogo">
+              <img
+                class="brand-dd-logo"
+                [src]="selectedBrandLogo"
+                [alt]="selectedBrandName"
+              />
+            </span>
+
+            <span class="brand-dd-name">{{ selectedBrandName }}</span>
+          </span>
+
+          <span class="brand-dd-caret">▾</span>
+        </button>
+
+        <div class="brand-dd-menu" *ngIf="brandOpen">
+          <!-- ALL (NO LOGO) -->
+          <button
+            type="button"
+            class="brand-dd-item"
+            (click)="selectBrand(null)"
+          >
+            <span class="brand-dd-item-left">
+              <span class="brand-dd-item-name">All brands</span>
+            </span>
+            <span class="brand-dd-check" *ngIf="!selectedBrandId">✓</span>
+          </button>
+
+          <!-- BRANDS -->
+          <button
+            type="button"
+            class="brand-dd-item"
+            *ngFor="let b of brands"
+            (click)="selectBrand(b)"
+          >
+            <span class="brand-dd-item-left">
+              <span class="brand-dd-icon">
+                <img
+                  class="brand-dd-logo"
+                  [src]="brandLogo(b)"
+                  [alt]="b.name"
+                />
+              </span>
+              <span class="brand-dd-item-name">{{ b.name }}</span>
+            </span>
+
+            <span class="brand-dd-check" *ngIf="selectedBrandId === b.id">✓</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODEL (styled select) -->
+    <!-- MODEL (custom dropdown - same style as brand, no logo) -->
+<div class="field">
+  <div class="field-label">Model</div>
+
+  <div class="model-dd">
+    <button
+      type="button"
+      class="model-dd-btn"
+      (click)="toggleModelDropdown()"
+      [disabled]="loading || !selectedBrandId || models.length === 0"
+    >
+      <span class="model-dd-name">
+        {{ selectedModelLabel }}
+      </span>
+
+      <span class="model-dd-caret">▾</span>
+    </button>
+
+    <div class="model-dd-menu" *ngIf="modelOpen">
+      <!-- ALL MODELS -->
+      <button type="button" class="model-dd-item" (click)="selectModel(null)">
+        <span class="model-dd-item-name">
+          {{ selectedBrandId ? 'All models' : 'Select brand to enable models' }}
+        </span>
+        <span class="model-dd-check" *ngIf="!selectedModelId">✓</span>
+      </button>
+
+      <!-- MODELS -->
+      <button
+        type="button"
+        class="model-dd-item"
+        *ngFor="let m of models"
+        (click)="selectModel(m)"
+      >
+        <span class="model-dd-item-name">{{ m.name }}</span>
+        <span class="model-dd-check" *ngIf="selectedModelId === m.id">✓</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+    <!-- SEARCH -->
+    <div class="field">
+      <div class="field-label">Search</div>
+
+      <div class="searchbar">
+        <input
+          class="searchbar-input"
+          name="searchText"
+          [(ngModel)]="searchText"
+          placeholder="Search SKU or title (KA/EN/RU)…"
+          (keydown.enter)="doSearch()"
+          [disabled]="loading"
+        />
+
+        <button
+          class="btn primary searchbar-btn"
+          type="button"
+          (click)="doSearch()"
+          [disabled]="loading"
+        >
+          Search
+        </button>
+
+        <button
+          class="btn searchbar-btn"
+          type="button"
+          (click)="clear()"
+          [disabled]="loading"
+        >
+          Clear
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="muted toolbar-hint">
+    Tip: Brand/Model filters narrow the list. Search resets filters (simple for now).
+  </div>
+</section>
+
+<!-- LIST -->
+<section class="card">
+  <div class="content-header" style="margin-bottom: 10px;">
+    <div>
+      <h2 class="card-title" style="margin:0;">Products</h2>
+      <div class="muted">{{ products.length }} items</div>
+    </div>
+  </div>
+
+  <p *ngIf="loading" class="muted">Loading…</p>
+  <p *ngIf="!loading && error" class="error">{{ error }}</p>
+
+  <div class="products" *ngIf="!loading && !error && products.length > 0; else empty">
+    <div class="product" *ngFor="let p of products">
+      <!-- IMAGE -->
+      <div class="product-media">
+        <img
+          *ngIf="p.image_url; else noImg"
+          [src]="p.image_url"
+          [alt]="p.title_ka || p.sku"
+          loading="lazy"
+        />
+        <ng-template #noImg>
+          <div class="product-placeholder">No image</div>
+        </ng-template>
+      </div>
+
+      <!-- SKU + PRICE -->
+      <div class="row">
+        <div class="sku">{{ p.sku }}</div>
+        <div class="price">{{ p.price_gel | number:'1.2-2' }} GEL</div>
+      </div>
+
+      <!-- TITLE -->
+      <div class="title">{{ p.title_ka }}</div>
+      <div class="muted">Stock: {{ p.stock_qty }}</div>
+
+      <!-- ACTIONS -->
+      <div style="display:flex; gap:10px; margin-top:10px; justify-content:flex-end;">
+        <a class="btn" [routerLink]="['/products', p.id]">View</a>
+        <button class="btn primary" type="button" (click)="addToCart(p)">
+          Add to cart
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="toast" *ngIf="toastVisible">
+  {{ toastMsg }}
+</div>
+
+  <ng-template #empty>
+    <div class="muted">No products yet.</div>
+  </ng-template>
+</section>

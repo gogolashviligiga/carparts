@@ -1,0 +1,125 @@
+/* =========================
+   HOME PAGE (Hero + sections)
+   ========================= */
+
+/* HERO */
+.hero {
+  /* keep it inside page width */
+  width: 100%;
+  max-width: 1200px;
+  margin: 18px auto 0;
+
+  min-height: calc(100vh - 70px);
+  border-radius: 16px;
+  overflow: hidden; /* ✅ IMPORTANT: stops overflow */
+  position: relative;
+
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 80px 16px;
+
+  background-image:
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+    url('/hero.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hero-content {
+  max-width: 980px;
+  width: 100%;
+  color: #fff;
+}
+
+.hero h1 {
+  margin: 0 0 12px;
+  color: #fff;
+  font-size: clamp(36px, 4.5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: 0.4px;
+  text-shadow: 0 12px 30px rgba(0,0,0,.35);
+}
+
+.hero p {
+  margin: 0 auto 22px;
+  max-width: 720px;
+  color: rgba(255,255,255,.88);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.hero .buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero .btn {
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.30);
+  background: rgba(0,0,0,.22);
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .15s ease, opacity .15s ease, background .15s ease;
+}
+
+.hero .btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.98;
+  background: rgba(0,0,0,.28);
+}
+
+.hero .btn.primary {
+  background: #fff;
+  color: #111;
+  border-color: transparent;
+  font-weight: 600;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
+}
+
+.hero .btn.primary:hover {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+/* Optional: a subtle fade at bottom for nice transition */
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.25));
+  pointer-events: none;
+}
+
+.home-section {
+  max-width: 1200px;
+  margin: 28px auto;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 14px;
+}
+
+.home-section h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+.home-section p {
+  margin: 0 0 14px;
+  opacity: 0.85;
+  line-height: 1.6;
+}
+
+.btn.small {
+  padding: 10px 14px;
+  border-radius: 10px;
+}

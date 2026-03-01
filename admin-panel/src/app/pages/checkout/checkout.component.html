@@ -1,0 +1,146 @@
+<section class="card checkout-card checkout">
+  <div class="content-header" style="margin-bottom: 10px;">
+    <div>
+      <h2 class="card-title" style="margin:0;">Checkout</h2>
+      <div class="muted">Fill details and place order</div>
+    </div>
+
+    <div class="actions">
+      <a class="btn ghost" routerLink="/cart">Back to cart</a>
+      <a class="btn" routerLink="/products">Continue shopping</a>
+    </div>
+  </div>
+
+  <!-- EMPTY -->
+  <div *ngIf="cart.items.length === 0" class="checkout-empty">
+    <div class="muted">Your cart is empty.</div>
+    <div style="margin-top: 12px;">
+      <a class="btn primary" routerLink="/products">Go to products</a>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div *ngIf="cart.items.length > 0" class="checkout-grid">
+    <!-- LEFT: FORM -->
+    <div class="checkout-form card">
+      <div class="checkout-form-head">
+        <h3 class="card-title" style="margin:0;">Customer details</h3>
+        <div class="muted">We’ll use this to confirm your order.</div>
+      </div>
+
+      <div class="form-grid">
+        <label class="field">
+          <div class="field-label">Name</div>
+          <input
+            class="control"
+            [(ngModel)]="customer_name"
+            placeholder="Customer name"
+            [disabled]="loading"
+            autocomplete="name"
+          />
+        </label>
+
+        <label class="field">
+          <div class="field-label">Phone</div>
+          <input
+            class="control"
+            [(ngModel)]="customer_phone"
+            placeholder="Phone number"
+            [disabled]="loading"
+            autocomplete="tel"
+          />
+        </label>
+
+        <label class="field" style="grid-column: 1 / -1;">
+          <div class="field-label">Address</div>
+          <input
+            class="control"
+            [(ngModel)]="customer_address"
+            placeholder="Delivery address"
+            [disabled]="loading"
+            autocomplete="street-address"
+          />
+        </label>
+
+        <label class="field" style="grid-column: 1 / -1;">
+          <div class="field-label">Note (optional)</div>
+          <textarea
+            class="control"
+            [(ngModel)]="customer_note"
+            placeholder="Any additional info… (optional)"
+            [disabled]="loading"
+          ></textarea>
+        </label>
+      </div>
+
+      <div *ngIf="error" class="checkout-error">
+        {{ error }}
+      </div>
+
+      <div class="checkout-actions">
+        <button
+          class="btn primary"
+          type="button"
+          (click)="placeOrder()"
+          [disabled]="loading"
+        >
+          {{ loading ? 'Placing order…' : 'Place order' }}
+        </button>
+
+        <button
+          class="btn ghost"
+          type="button"
+          (click)="resetForm()"
+          [disabled]="loading"
+        >
+          Clear
+        </button>
+      </div>
+
+      <div *ngIf="loading" class="muted" style="margin-top: 10px;">
+        Sending your order to the server…
+      </div>
+    </div>
+
+    <!-- RIGHT: SUMMARY -->
+    <div class="checkout-summary card">
+      <div class="checkout-summary-head">
+        <h3 class="card-title" style="margin:0;">Order summary</h3>
+        <div class="muted">{{ cart.count() }} items</div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="table checkout-table">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th class="num">Qty</th>
+              <th class="num">Sum</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let i of cart.items">
+              <td>
+                <div class="sum-title">{{ i.title_ka }}</div>
+                <div class="muted sum-sub">
+                  {{ i.sku }} • {{ i.price_gel | number:'1.2-2' }} ₾
+                </div>
+              </td>
+
+              <td class="num mono">{{ i.qty }}</td>
+              <td class="num strong mono">
+                {{ (i.price_gel * i.qty) | number:'1.2-2' }} ₾
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="checkout-totals">
+        <div class="muted">Total</div>
+        <div class="total-amount mono">{{ cart.total() | number:'1.2-2' }} ₾</div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,36 @@
+<section class="card">
+  <h2 class="card-title">Your Order</h2>
+
+  <p *ngIf="loading" class="muted">Loading...</p>
+  <p *ngIf="!loading && error" class="muted" style="color:#c00;">{{ error }}</p>
+
+  <div *ngIf="!loading && !error && order">
+    <div class="muted" style="margin-bottom: 10px;">
+      <div><b>Order ID:</b> {{ order.id }}</div>
+      <div><b>Status:</b> {{ order.status }}</div>
+      <div><b>Date:</b> {{ order.created_at | date:'short' }}</div>
+    </div>
+
+    <div class="products" style="margin-top: 10px;">
+      <div class="product" *ngFor="let it of items">
+        <div class="row">
+          <div class="sku">{{ it.sku }}</div>
+          <div class="price">{{ it.price_gel | number:'1.2-2' }} ₾</div>
+        </div>
+        <div class="title">{{ it.title_ka }}</div>
+        <div class="muted">Qty: {{ it.qty }}</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 12px;">
+      <b>Total:</b> {{ order.total_price | number:'1.2-2' }} ₾
+      <div class="muted" *ngIf="items.length">
+        (Items sum: {{ itemsTotal() | number:'1.2-2' }} ₾)
+      </div>
+    </div>
+
+    <div style="margin-top: 14px;">
+      <a routerLink="/products">Back to products</a>
+    </div>
+  </div>
+</section>
