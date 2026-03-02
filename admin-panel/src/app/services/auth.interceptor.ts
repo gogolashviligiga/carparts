@@ -9,7 +9,7 @@ export class AuthInterceptor implements HttpInterceptor {
     if (!token) return next.handle(req);
 
     // only attach for backend requests
-    if (!req.url.startsWith('https://carparts-production.up.railway.app')) return next.handle(req);
+    if (!req.url.startsWith('https://carparts-production.up.railway.app/api')) return next.handle(req);
 
     return next.handle(
       req.clone({

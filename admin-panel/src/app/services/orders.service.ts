@@ -79,7 +79,7 @@ export type AdminOrderItemsResponse = {
 
 @Injectable({ providedIn: 'root' })
 export class OrdersService {
-  private readonly API_BASE = 'https://carparts-production.up.railway.app';
+  private readonly API_BASE = 'https://carparts-production.up.railway.app/api';
 
   constructor(private http: HttpClient) {}
 

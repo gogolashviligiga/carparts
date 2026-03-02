@@ -28,7 +28,7 @@ type CarModel = {
   templateUrl: './products.component.html',
 })
 export class ProductsComponent implements OnInit {
-  readonly API_BASE = 'https://carparts-production.up.railway.app';
+  readonly API_BASE = 'https://carparts-production.up.railway.app/api';
 
   products: Product[] = [];
 

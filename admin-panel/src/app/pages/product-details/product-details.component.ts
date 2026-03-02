@@ -13,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './product-details.component.html',
 })
 export class ProductDetailsComponent implements OnInit, OnDestroy {
-  private readonly API = 'https://carparts-production.up.railway.app';
+  private readonly API = 'https://carparts-production.up.railway.app/api';
   private readonly destroy$ = new Subject<void>();
 
   loading = false;

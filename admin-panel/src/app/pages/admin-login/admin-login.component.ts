@@ -29,7 +29,7 @@ export class AdminLoginComponent {
   private auth = inject(AdminAuthService);
   private router = inject(Router);
 
-  private API = 'https://carparts-production.up.railway.app';
+  private API = 'https://carparts-production.up.railway.app/api';
 
   login(): void {
     if (this.loading) return;

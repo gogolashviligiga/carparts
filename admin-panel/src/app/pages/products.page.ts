@@ -45,7 +45,7 @@ export class ProductsPage {
   loading = false;
   error = '';
 
-  private API = 'https://carparts-production.up.railway.app';
+  private API = 'https://carparts-production.up.railway.app/api';
 
   ngOnInit() {
     this.load();
