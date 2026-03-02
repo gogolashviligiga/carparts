@@ -45,7 +45,7 @@ export class ProductsPage {
   loading = false;
   error = '';
 
-  private API = 'http://localhost:5000/api/products';
+  private API = 'https://carparts-production.up.railway.app';
 
   ngOnInit() {
     this.load();

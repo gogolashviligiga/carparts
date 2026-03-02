@@ -29,7 +29,7 @@ export class AdminComponent implements OnInit {
   private router = inject(Router);
   private auth = inject(AdminAuthService);
 
-  readonly API_BASE = 'http://localhost:5000/api';
+  readonly API_BASE = 'https://carparts-production.up.railway.app';
   readonly API_LIST = `${this.API_BASE}/products`;
   readonly API_ADMIN = `${this.API_BASE}/admin/products`;
 

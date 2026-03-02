@@ -29,7 +29,7 @@ export class AdminLoginComponent {
   private auth = inject(AdminAuthService);
   private router = inject(Router);
 
-  private API = 'http://localhost:5000/api';
+  private API = 'https://carparts-production.up.railway.app';
 
   login(): void {
     if (this.loading) return;
